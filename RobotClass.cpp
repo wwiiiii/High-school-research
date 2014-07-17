@@ -18,7 +18,7 @@ void cRobot::init(int ID, double mas, DATA dat, double s_x, double s_y)
 }
 
 ///현재 위치 반환
-std::pair<double, double> cRobot::fNowCoord(void){
+std::pair<int, int> cRobot::fNowCoord(void){
 	return std::make_pair(coord_x, coord_y);
 }
 	///위치 출력, DirectX 이용 예정

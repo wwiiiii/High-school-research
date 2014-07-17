@@ -3,6 +3,6 @@
 #include <utility>
 
 std::pair<double, double > cRoad::RoadForce(cRobot& target){
-	pair<double, double> targetCoord = target.fNowCoord();
+	std::pair<int, int> targetCoord = target.fNowCoord();
 
 }

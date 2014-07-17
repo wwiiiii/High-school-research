@@ -23,7 +23,7 @@ Direct X에서 WIN API 사용으로 노선 변경, 따로 도형 객체가 필�
 
 #ifndef __Robot_Class
 #define __Robot_Class
-
+#include <utility>
 #define DATA int///기타 추가 자료형
 #define dT 0.001
 
@@ -36,16 +36,16 @@ class cRobot{
 	private:
 		double speed_x, speed_y;
 		double force_x, force_y;
-		double coord_x, coord_y;
+		int coord_x, coord_y;
 		double mass;
 		int id;
 		DATA data;
 	
 	public:
 		void init(int ID, double mas, DATA dat, double s_x, double s_y);//생성자, 위치는 랜덤, id와 질량은 주어지고, data도 주어지고, 속도도 주어지고, 받는 힘은 0
-		std::pair<double, double> fNowCoord(void);///현재 위치 반환
+		std::pair<int, int> fNowCoord(void);///현재 위치 반환
 		void fShow(void);
-		void fRenewForce(double otherCoord_X, double otherCoord_Y);///힘 갱신 - 다른 객체랑 상호작용
+		void fRenewForce(double dX, double dY);///힘 갱신 - 다른 객체랑 상호작용
 		void fRenewVelocity(void);///속도 갱신
 		void fRenewCoord(void);///위치 갱신
 };
