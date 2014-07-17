@@ -10,7 +10,8 @@ class cRoad{
 public:
 	std::vector<line> Lines;
 	std::vector<coord> CheckPoints;
-	std::pair<double, double> RoadForce(cRobot& target);
+	std::pair<double, double> fRoadForce(cRobot& target);
+	void fRoadIni(void);
 };
 
 #endif

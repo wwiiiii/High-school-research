@@ -1,3 +1,5 @@
+#ifndef __Robot_Class_Cpp
+#define __Robot_Class_Cpp
 #include <utility>
 #include "RobotClass.h"
 #define DATA int///기타 추가 자료형
@@ -43,3 +45,5 @@ void cRobot::fFindRoute(int from, int to)
 {
 	return;
 }
+
+#endif

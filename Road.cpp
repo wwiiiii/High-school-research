@@ -1,10 +1,14 @@
+#ifndef __Road_Cpp
+#define __Road_Cpp
+
 #include "Road.h"
 #include <cmath>
+#include <cstdio>
 #define ProportionConstant (10000.0)
 #define Threshold (500)
 double abs(double a){ if (a < 0)return -a; return a; }
 
-std::pair<double, double > cRoad::RoadForce(cRobot& target){
+std::pair<double, double > cRoad::fRoadForce(cRobot& target){
 
 	double force, forcex, forcey, distance;
 	std::pair<double, double> ret = std::make_pair(0.0,0.0);
@@ -23,3 +27,10 @@ std::pair<double, double > cRoad::RoadForce(cRobot& target){
 	}
 	return ret;
 }
+
+
+void cRoad::fRoadIni(void)
+{
+	freopen("");
+}
+#endif
