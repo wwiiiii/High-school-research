@@ -3,8 +3,9 @@
 #include <utility>
 #include <vector>
 #include "RobotClass.h"
-typedef struct{ double a, b, c; }line;
 typedef struct{ int x, y; }coord;
+typedef struct{ double a, b, c; coord from, to; }line; ///always a>=0, segment [from, to]
+
 class cRoad{
 public:
 	std::vector<line> Lines;

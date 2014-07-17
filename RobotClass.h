@@ -44,7 +44,6 @@ class cRobot{
 	public:
 		void init(int ID, double mas, DATA dat, double s_x, double s_y);//생성자, 위치는 랜덤, id와 질량은 주어지고, data도 주어지고, 속도도 주어지고, 받는 힘은 0
 		std::pair<int, int> fNowCoord(void);///현재 위치 반환
-		void fShow(void);
 		void fRenewForce(double dX, double dY);///힘 갱신 - 다른 객체랑 상호작용
 		void fRenewVelocity(void);///속도 갱신
 		void fRenewCoord(void);///위치 갱신

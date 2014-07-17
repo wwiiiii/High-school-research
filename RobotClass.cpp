@@ -21,10 +21,7 @@ void cRobot::init(int ID, double mas, DATA dat, double s_x, double s_y)
 std::pair<int, int> cRobot::fNowCoord(void){
 	return std::make_pair(coord_x, coord_y);
 }
-	///위치 출력, DirectX 이용 예정
-void cRobot::fShow(void){
-	return;
-}
+
 	///힘 갱신 - 다른 객체랑 상호작용
 void cRobot::fRenewForce(double dX, double dY){
 	force_x += dX;
