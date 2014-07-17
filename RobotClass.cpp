@@ -41,3 +41,8 @@ void cRobot::fRenewCoord(void){
 	coord_x += speed_x * dT;
 	coord_y += speed_y * dT;
 }
+
+void cRobot::fFindRoute(int from, int to)
+{
+	return;
+}
