@@ -8,7 +8,7 @@
 //otherx, othery가 만유인력을 작용시키는 물체의 좌표
 
 //생성자, 위치는 랜덤, id와 질량은 주어지고, data도 주어지고, 속도도 주어지고, 받는 힘은 0
-void cRobot::cRobot(int ID, double mas, DATA dat, double s_x, double s_y)
+void cRobot::init(int ID, double mas, DATA dat, double s_x, double s_y)
 {
 	id = ID;
 	mass = mas;
@@ -16,12 +16,9 @@ void cRobot::cRobot(int ID, double mas, DATA dat, double s_x, double s_y)
 	speed_x = s_x; speed_y = s_y;
 	force_x = force_y = coord_x = coord_y = 0;
 }
-//이것은 함수
-pair<double, double> cRobot::Interaction(double x, double y, double otherx, double othery)
-{
-	}
+
 ///현재 위치 반환
-pair<double, double> cRobot::fNowCoord(void){
+std::pair<double, double> cRobot::fNowCoord(void){
 	return std::make_pair(coord_x, coord_y);
 }
 	///위치 출력, DirectX 이용 예정
@@ -29,10 +26,9 @@ void cRobot::fShow(void){
 	return;
 }
 	///힘 갱신 - 다른 객체랑 상호작용
-void cRobot::fRenewForce(double otherCoord_X, double otherCoord_Y){
-	pair<double, double> interact = Interaction(coord_x, coord_y, otherCoord_X, otherCoord_Y);
-	force_x += interact.first;
-	force_y += interact.second;
+void cRobot::fRenewForce(double dX, double dY){
+	force_x += dX;
+	force_y += dY;
 	///상대 위치를 받아서 힘 갱신하는거 추가해야됨
 }
 	///속도 갱신
