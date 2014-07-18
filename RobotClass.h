@@ -37,12 +37,13 @@ class cRobot{
 		double speed_x, speed_y;
 		double force_x, force_y;
 		int coord_x, coord_y;
+		bool isAutoDriving;
 		double mass;
 		int id;
 		DATA data;
 
 	public:
-		void init(int ID, double mas, DATA dat, double s_x, double s_y);//생성자, 위치는 랜덤, id와 질량은 주어지고, data도 주어지고, 속도도 주어지고, 받는 힘은 0
+		void init(int ID, double mas, DATA dat, int from, int to);//ID, 질량, 데이터, 출발점과 도착점
 		std::pair<int, int> fNowCoord(void);///현재 위치 반환
 		void fRenewForce(double dX, double dY);///힘 갱신 - 다른 객체랑 상호작용
 		void fRenewVelocity(void);///속도 갱신

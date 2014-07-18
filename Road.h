@@ -10,6 +10,7 @@ class cRoad{
 public:
 	std::vector<line> Lines;			
 	std::vector<coord> CheckPoints;
+	std::vector<std::vector<int> > Directions;///Directions[i]'s component j => there is route [i] -> [j]
 	std::vector<coord> Obstacles;		///coords of obstacles
 	std::pair<double, double> fRoadForce(cRobot& target);
 };

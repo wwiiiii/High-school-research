@@ -9,14 +9,12 @@
 //x, y가 힘을 받는 물체의 좌표
 //otherx, othery가 만유인력을 작용시키는 물체의 좌표
 
-//생성자, 위치는 랜덤, id와 질량은 주어지고, data도 주어지고, 속도도 주어지고, 받는 힘은 0
-void cRobot::init(int ID, double mas, DATA dat, double s_x, double s_y)
+//생성자, 위치는 랜덤, id와 질량은 주어지고, data도 주어지고, 받는 힘은 0
+void cRobot::init(int ID, double mas, DATA dat, int from, int to)
 {
-	id = ID;
-	mass = mas;
-	data = dat;
-	speed_x = s_x; speed_y = s_y;
-	force_x = force_y = coord_x = coord_y = 0;
+	id = ID;	mass = mas;	data = dat;
+	speed_x = speed_y = force_x = force_y = coord_x = coord_y = 0; isAutoDriving = true;
+	fFindRoute(from, to);
 }
 
 ///현재 위치 반환

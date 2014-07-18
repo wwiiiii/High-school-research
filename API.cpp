@@ -3,7 +3,8 @@
 #include <utility>
 #include <cstdlib>
 #include <ctime>
-#include "Initialization.cpp"
+#include "Road.h"
+#include "RobotClass.h"
 #define N 30
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -73,7 +74,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	case WM_TIMER:
 		hdc = GetDC(hWnd);
 		InvalidateRect(hWnd, &rDisplay, TRUE);
-		//Repeated Task
+		RepeatedTask();
 		ReleaseDC(hWnd, hdc);
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
