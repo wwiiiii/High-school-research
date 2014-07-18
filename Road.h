@@ -8,8 +8,9 @@ typedef struct{ double a, b, c; coord from, to; }line; ///always a>=0, segment [
 
 class cRoad{
 public:
-	std::vector<line> Lines;
+	std::vector<line> Lines;			
 	std::vector<coord> CheckPoints;
+	std::vector<coord> Obstacles;		///coords of obstacles
 	std::pair<double, double> fRoadForce(cRobot& target);
 	void fRoadIni(void);
 };

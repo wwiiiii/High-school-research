@@ -3,15 +3,15 @@
 #include <utility>
 #include <cstdlib>
 #include <ctime>
-#include "RobotClass.cpp"
-#include "Road.cpp"
+#include "Initialization.cpp"
 #define N 30
-using namespace std;
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 HINSTANCE g_hInst;
 LPCTSTR lpszClass = TEXT("과제연구");
 
+//vector<cRobot> RobotContainer;
+//cRoad mainRoad;
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	LPSTR lpszCmdParam, int nCmdShow)
@@ -60,18 +60,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	int Rsize = 20;
 	HDC hdc;
 	PAINTSTRUCT ps;
-	static RECT rt1, rt2;
+	static RECT rDisplay;///rDisplay :: zoomed scene area
 	static bool isMouseClicked = false;
 	switch (iMessage)
 	{
 	case WM_CREATE:
 		srand(time(NULL));
+	//	Initi(hWnd,hdc,mainRoad, RobotContainer);
 		SetTimer(hWnd, 1, 1, NULL);
 		SendMessage(hWnd, WM_TIMER, 1, 0);
 		return 0;
 	case WM_TIMER:
 		hdc = GetDC(hWnd);
-		InvalidateRect(hWnd, NULL, TRUE);
+		InvalidateRect(hWnd, &rDisplay, TRUE);
 		//Repeated Task
 		ReleaseDC(hWnd, hdc);
 	case WM_PAINT:

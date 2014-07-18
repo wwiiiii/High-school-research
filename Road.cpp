@@ -6,7 +6,6 @@
 #include <cstdio>
 #define ProportionConstant (10000.0)
 #define Threshold (500)
-double abs(double a){ if (a < 0)return -a; return a; }
 
 std::pair<double, double > cRoad::fRoadForce(cRobot& target){
 
@@ -31,6 +30,6 @@ std::pair<double, double > cRoad::fRoadForce(cRobot& target){
 
 void cRoad::fRoadIni(void)
 {
-	freopen("");
+	freopen("InputCondition.txt","rt",stdin);
 }
 #endif

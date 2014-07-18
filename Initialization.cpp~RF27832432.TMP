@@ -1,6 +1,3 @@
-#ifndef __INI_CPP
-#define __INI_CPP
-
 #include <Windows.h>
 #include <cstdio>
 #include "RobotClass.cpp"
@@ -18,5 +15,3 @@ void Initi(HWND hWnd, HDC hdc, cRoad &mainRoad, std::vector<cRobot>& RobotContai
 	EndPaint(hWnd, &ps);
 	return;
 }
-
-#endif
