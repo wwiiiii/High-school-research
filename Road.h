@@ -12,7 +12,6 @@ public:
 	std::vector<coord> CheckPoints;
 	std::vector<coord> Obstacles;		///coords of obstacles
 	std::pair<double, double> fRoadForce(cRobot& target);
-	void fRoadIni(void);
 };
 
 #endif

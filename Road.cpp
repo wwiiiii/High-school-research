@@ -27,9 +27,4 @@ std::pair<double, double > cRoad::fRoadForce(cRobot& target){
 	return ret;
 }
 
-
-void cRoad::fRoadIni(void)
-{
-	freopen("InputCondition.txt","rt",stdin);
-}
 #endif
