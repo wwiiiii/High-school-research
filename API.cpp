@@ -5,14 +5,16 @@
 #include <ctime>
 #include "Road.h"
 #include "RobotClass.h"
+#include "Initialization.h"
+#include "Repeat.h"
 #define N 30
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 HINSTANCE g_hInst;
-LPCTSTR lpszClass = TEXT("과제연구");
+LPCTSTR lpszClass = TEXT("GSSH TEAM PROJECT");
 
-//vector<cRobot> RobotContainer;
-//cRoad mainRoad;
+std::vector<cRobot> RobotContainer;
+cRoad mainRoad;
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	LPSTR lpszCmdParam, int nCmdShow)
@@ -74,7 +76,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	case WM_TIMER:
 		hdc = GetDC(hWnd);
 		InvalidateRect(hWnd, &rDisplay, TRUE);
-		RepeatedTask();
+		RepeatedTask(mainRoad,RobotContainer);
 		ReleaseDC(hWnd, hdc);
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);

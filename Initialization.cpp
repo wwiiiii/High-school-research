@@ -3,8 +3,7 @@
 
 #include <Windows.h>
 #include <cstdio>
-#include "RobotClass.cpp"
-#include "Road.cpp"
+#include "Initialization.h"
 #define MASS (100.0)
 ///Load the given condition from "InputCondition.txt"
 ///display default menu
