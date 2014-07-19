@@ -11,10 +11,10 @@ std::pair<double, double > cRoad::fRoadForce(cRobot& target){
 
 	double force, forcex, forcey, distance;
 	std::pair<double, double> ret = std::make_pair(0.0,0.0);
-	std::pair<int, int> targetCoord = target.fNowCoord();
+	coord targetCoord = target.fNowCoord();
 	for (int i = 0; i < Lines.size(); ++i)
 	{
-		distance = abs(Lines[i].a * targetCoord.first + Lines[i].b * targetCoord.second + Lines[i].c) / std::sqrt(Lines[i].a * Lines[i].a + Lines[i].b * Lines[i].b);
+		distance = abs(Lines[i].a * targetCoord.x + Lines[i].b * targetCoord.y + Lines[i].c) / std::sqrt(Lines[i].a * Lines[i].a + Lines[i].b * Lines[i].b);
 		force = ProportionConstant / distance; //�о
 		if (distance > Threshold) force = 0;
 		/*

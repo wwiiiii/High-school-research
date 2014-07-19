@@ -5,7 +5,7 @@
 #include <ctime>
 #include "Road.h"
 #include "RobotClass.h"
-#include "Initialization.h"
+#include "InitAndDisplay.h"
 #include "Repeat.h"
 #define N 30
 
@@ -59,7 +59,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
-	int nx, ny;
+	int nx, ny; mainRoad.scalex = mainRoad.scaley = 1;
 	int Rsize = 20;
 	HDC hdc;
 	PAINTSTRUCT ps;
@@ -69,19 +69,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_CREATE:
 		srand(time(NULL));
-	//	Initi(hWnd,hdc,mainRoad, RobotContainer);
+		//Initi(hWnd,mainRoad, RobotContainer);
 		SetTimer(hWnd, 1, 1, NULL);
+		InvalidateRect(hWnd, NULL, true);
+		SendMessage(hWnd, WM_PAINT, 1, 0);
 		SendMessage(hWnd, WM_TIMER, 1, 0);
 		return 0;
 	case WM_TIMER:
 		hdc = GetDC(hWnd);
 		InvalidateRect(hWnd, &rDisplay, TRUE);
-		RepeatedTask(mainRoad,RobotContainer);
+		//RepeatedTask(mainRoad,RobotContainer);
+		InvalidateRect(hWnd, NULL, true);
+		SendMessage(hWnd, WM_PAINT, 1, 0);
 		ReleaseDC(hWnd, hdc);
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
-		///	MoveToEx(hdc, container[i].x, container[i].y, NULL);
-		///	Rectangle(hdc, container[i].x - Rsize, container[i].y - Rsize, container[i].x + Rsize, container[i].y + Rsize);
+		Display(hWnd,hdc,ps);
 		EndPaint(hWnd, &ps);
 		return 0;
 	case WM_KEYDOWN:

@@ -3,13 +3,14 @@
 
 #include <Windows.h>
 #include <cstdio>
-#include "Initialization.h"
+#include "InitAndDisplay.h"
 #define MASS (100.0)
 ///Load the given condition from "InputCondition.txt"
 ///display default menu
 
-void Initi(HWND hWnd, HDC hdc, cRoad &mainRoad, std::vector<cRobot>& RobotContainer)
+void Initi(HWND hWnd, cRoad &mainRoad, std::vector<cRobot>& RobotContainer)
 {
+	HDC hdc;
 	int segnum, cpnum, temp, carnum, u,v; coord tempcoord; line templine;
 	freopen("InputCondition.txt","rt",stdin);
 	scanf("%d%d",&segnum, &cpnum);
@@ -40,14 +41,16 @@ void Initi(HWND hWnd, HDC hdc, cRoad &mainRoad, std::vector<cRobot>& RobotContai
 		tempRobot.init(i, MASS, NULL, u, v);
 		RobotContainer.push_back(tempRobot);
 	}
+	return;
+}
 
-	PAINTSTRUCT ps;
-	hdc = BeginPaint(hWnd, &ps);
-
-
-	///	MoveToEx(hdc, container[i].x, container[i].y, NULL);
-	///	Rectangle(hdc, container[i].x - Rsize, container[i].y - Rsize, container[i].x + Rsize, container[i].y + Rsize);
-	EndPaint(hWnd, &ps);
+void Display(HWND hWnd, HDC hdc, PAINTSTRUCT ps)
+{
+	MoveToEx(hdc, 50, 50, NULL);
+	LineTo(hdc,50, 700);
+	LineTo(hdc, 1400, 700);
+	LineTo(hdc, 1400, 50);
+	LineTo(hdc, 50, 50);
 	return;
 }
 

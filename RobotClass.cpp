@@ -13,13 +13,13 @@
 void cRobot::init(int ID, double mas, DATA dat, int from, int to)
 {
 	id = ID;	mass = mas;	data = dat;
-	speed_x = speed_y = force_x = force_y = coord_x = coord_y = 0; isAutoDriving = true;
+	speed_x = speed_y = force_x = force_y = NowCoord.x = NowCoord.y = 0; isAutoDriving = true;
 	fFindRoute(from, to);
 }
 
 ///현재 위치 반환
-std::pair<int, int> cRobot::fNowCoord(void){
-	return std::make_pair(coord_x, coord_y);
+coord cRobot::fNowCoord(void){
+	return NowCoord;
 }
 
 	///힘 갱신 - 다른 객체랑 상호작용
@@ -35,8 +35,8 @@ void cRobot::fRenewVelocity(void){
 }
 	///위치 갱신
 void cRobot::fRenewCoord(void){
-	coord_x += speed_x * dT;
-	coord_y += speed_y * dT;
+	NowCoord.x += speed_x * dT;
+	NowCoord.y += speed_y * dT;
 }
 
 void cRobot::fFindRoute(int from, int to)

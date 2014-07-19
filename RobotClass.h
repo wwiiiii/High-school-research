@@ -30,13 +30,13 @@ Direct X에서 WIN API 사용으로 노선 변경, 따로 도형 객체가 필요 없으므로 제거
 //위치에 따라 작용하는 힘 계산 함수
 //x, y가 힘을 받는 물체의 좌표
 //otherx, othery가 만유인력을 작용시키는 물체의 좌표
-
+typedef struct{ int x, y; }coord;
 class cRobot{
 
 	private:
 		double speed_x, speed_y;
 		double force_x, force_y;
-		int coord_x, coord_y;
+		coord NowCoord;
 		bool isAutoDriving;
 		double mass;
 		int id;
@@ -44,7 +44,7 @@ class cRobot{
 
 	public:
 		void init(int ID, double mas, DATA dat, int from, int to);//ID, 질량, 데이터, 출발점과 도착점
-		std::pair<int, int> fNowCoord(void);///현재 위치 반환
+		coord fNowCoord(void);///현재 위치 반환
 		void fRenewForce(double dX, double dY);///힘 갱신 - 다른 객체랑 상호작용
 		void fRenewVelocity(void);///속도 갱신
 		void fRenewCoord(void);///위치 갱신
