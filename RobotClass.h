@@ -24,6 +24,7 @@ Direct X에서 WIN API 사용으로 노선 변경, 따로 도형 객체가 필요 없으므로 제거
 #ifndef __Robot_Class
 #define __Robot_Class
 #include <utility>
+#include <vector>
 #define DATA int///기타 추가 자료형
 #define dT 0.001
 
@@ -34,8 +35,11 @@ typedef struct{ int x, y; }coord;
 class cRobot{
 
 	private:
+		std::vector<int> BasicRoute;
+		int RouteNowAt;
 		double speed_x, speed_y;
 		double force_x, force_y;
+		double BasicForceX, BasicForceY;///force to follow basic route(from -> to)
 		coord NowCoord;
 		bool isAutoDriving;
 		double mass;
@@ -46,6 +50,7 @@ class cRobot{
 		void init(int ID, double mas, DATA dat, int from, int to);//ID, 질량, 데이터, 출발점과 도착점
 		coord fNowCoord(void);///현재 위치 반환
 		void fRenewForce(double dX, double dY);///힘 갱신 - 다른 객체랑 상호작용
+		void fConstForce(std::vector<coord> & CheckPoints);///기본경로 따라가게 하는 힘
 		void fRenewVelocity(void);///속도 갱신
 		void fRenewCoord(void);///위치 갱신
 		void fFindRoute(int from, int to);///체크포인트가 주어졌을 때 경로 찾기

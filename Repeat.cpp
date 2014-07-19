@@ -25,13 +25,16 @@ void RepeatedTask(cRoad& mainRoad, std::vector<cRobot> &RobotContainer)
 
 	for (int i = 0; i < RobotContainer.size(); ++i)
 	{
+		for (int j = 0; j < mainRoad.Lines.size(); ++j)
+		{
+			std::pair<double, double> F = mainRoad.fRoadForce(RobotContainer[i]);
+			RobotContainer[i].fRenewForce(F.first,F.second);
+		}
 		///Process Interaction between robot and lines
 	}
 	for (int i = 0; i < RobotContainer.size(); ++i)
 	{
 		RobotContainer[i].fRenewVelocity();
 		RobotContainer[i].fRenewCoord();
-		coord NowCoord = RobotContainer[i].fNowCoord();
-		///Display robot on shot
 	}
 }
