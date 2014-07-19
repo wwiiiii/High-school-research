@@ -39,6 +39,18 @@ void cRobot::fRenewCoord(void){
 	NowCoord.y += speed_y * dT;
 }
 
+void cRobot::fConstForce(std::vector<coord>&CheckPoints){
+	force_x += BasicForceX;
+	force_y += BasicForceY;
+	coord NextCP = CheckPoints[BasicRoute[RouteNowAt]];
+	if (NextCP.x - 100 <= NowCoord.x && NowCoord.x <= NextCP.x + 100 && NextCP.y - 100 <= NowCoord.y && NowCoord.y <= NextCP.y + 100)
+	{
+		BasicForceX = 0;
+		BasicForceY = 0;
+		RouteNowAt++;
+	}
+}
+
 void cRobot::fFindRoute(int from, int to)
 {
 	return;

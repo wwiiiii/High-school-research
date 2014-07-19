@@ -77,14 +77,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		return 0;
 	case WM_TIMER:
 		hdc = GetDC(hWnd);
-		InvalidateRect(hWnd, &rDisplay, TRUE);
 		//RepeatedTask(mainRoad,RobotContainer);
 		InvalidateRect(hWnd, NULL, true);
-		SendMessage(hWnd, WM_PAINT, 1, 0);
+		//SendMessage(hWnd, WM_PAINT, 1, 0);
 		ReleaseDC(hWnd, hdc);
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
-		Display(hWnd,hdc,ps);
+		Display(hWnd,hdc,ps,RobotContainer,mainRoad);
 		EndPaint(hWnd, &ps);
 		return 0;
 	case WM_KEYDOWN:
