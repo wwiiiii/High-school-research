@@ -10,7 +10,7 @@
 
 void Initi(HWND hWnd, cRoad &mainRoad, std::vector<cRobot>& RobotContainer)
 {
-	HDC hdc; cRobot tempRobot;
+	HDC hdc;
 	int segnum, cpnum, temp, carnum, u,v; coord tempcoord; line templine;
 	freopen("InputCondition.txt","rt",stdin);
 	scanf("%d%d",&segnum, &cpnum);
@@ -36,38 +36,21 @@ void Initi(HWND hWnd, cRoad &mainRoad, std::vector<cRobot>& RobotContainer)
 		}
 	}
 	scanf("%d", &carnum);
-	
-	RobotContainer.push_back(tempRobot);
-	for (int i = 0; i < carnum; ++i){
-		; scanf("%d %d",&u,&v);
+	for (int i = 1; i <= carnum; ++i){
+		cRobot tempRobot; scanf("%d %d",&u,&v);
 		tempRobot.init(i, MASS, NULL, u, v);
 		RobotContainer.push_back(tempRobot);
 	}
 	return;
 }
 
-void Display(HWND hWnd, HDC hdc, PAINTSTRUCT ps, std::vector<cRobot>& RobotContainer, cRoad &mainRoad)
+void Display(HWND hWnd, HDC hdc, PAINTSTRUCT ps)
 {
-	///기본 틀 생성, Draw basic frame
-	Rectangle(hdc, 70, 70, 1400, 700);
-	Rectangle(hdc, 70, 700 + 30, 1920 - 70, 1000 - 70);
-	Rectangle(hdc, 1400 + 30, 70, 1920 - 70, 70 + 300);
-	Rectangle(hdc, 1400 + 30, 70 + 300 + 30, 1920 - 70, 700);
-	/*
-	///자동차들 그리기
-	coord center; center.x = (70 + 1400) / 2;  center.y = (70 + 700) / 2;
-	coord passiveCoord = RobotContainer[mainRoad.PassiveID].fNowCoord();
-	for (int i = 0; i < RobotContainer.size(); ++i)
-	{
-		coord p = RobotContainer[i].fNowCoord();
-		p.x = center.x + (passiveCoord.x - p.x) / mainRoad.scalex;
-		p.y = center.y + (passiveCoord.y - p.y) / mainRoad.scaley;
-		Rectangle(hdc, p.x - 10, p.y - 10, p.x + 10, p.y + 10);
-	}
-	*/
-	///도로그리기
-
-
+	MoveToEx(hdc, 50, 50, NULL);
+	LineTo(hdc,50, 700);
+	LineTo(hdc, 1400, 700);
+	LineTo(hdc, 1400, 50);
+	LineTo(hdc, 50, 50);
 	return;
 }
 
