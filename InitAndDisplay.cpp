@@ -12,9 +12,14 @@ void Initi(HWND hWnd, cRoad &mainRoad, std::vector<cRobot>& RobotContainer)
 {
 	HDC hdc; cRobot tempRobot;
 	int segnum, cpnum, temp, carnum, u,v; coord tempcoord; line templine;
-	freopen("InputCondition.txt","rt",stdin);
+	freopen("TEXT.txt","rt",stdin);
 	scanf("%d%d",&segnum, &cpnum);
-	mainRoad.Directions.reserve(cpnum + 5);
+
+	for (int i = 0; i < cpnum + 5; ++i){
+		std::vector<int> TEMP;
+		mainRoad.Directions.push_back(TEMP);
+	}
+
 	for (int i = 0; i < segnum; ++i){
 		scanf("%d %d %d %d",&templine.from.x , &templine.from.y, &templine.to.x, &templine.to.y);
 		templine.a = templine.to.y - templine.from.y;
@@ -36,8 +41,7 @@ void Initi(HWND hWnd, cRoad &mainRoad, std::vector<cRobot>& RobotContainer)
 		}
 	}
 	scanf("%d", &carnum);
-	
-	RobotContainer.push_back(tempRobot);
+
 	for (int i = 0; i < carnum; ++i){
 		scanf("%d %d",&u,&v);
 		tempRobot.init(i, MASS, NULL, u, v);

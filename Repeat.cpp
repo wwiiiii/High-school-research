@@ -13,7 +13,7 @@ void RepeatedTask(cRoad& mainRoad, std::vector<cRobot> &RobotContainer)
 		{
 			p2 = RobotContainer[j].fNowCoord();
 			dist = sqrt( (p1.x - p2.x)*(p1.x - p2.x) + (p1.y - p2.y)*(p1.y - p2.y) );
-			force = dist * 1234;
+			force = dist * dist * dist;
 			forcex = force / 2;
 			forcey = force / 2;
 			RobotContainer[i].fRenewForce(forcex, forcey);

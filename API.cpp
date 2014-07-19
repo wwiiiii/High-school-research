@@ -67,26 +67,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	static bool isMouseClicked = false; FILE *fp = fopen("output.txt", "wt");
 	cRobot tt;
 	fprintf(fp, "%d", RobotContainer.size());
+	mainRoad.PassiveID = 1;
 	
 	
 	switch (iMessage)
 	{
 	case WM_CREATE:
-		tt.init(0, 10.0, 0, 1, 1);
-		RobotContainer.push_back(tt);
-		tt.init(1, 10.0, 0, 1, 1);
-		RobotContainer.push_back(tt);
 		srand(time(NULL));
-		//Initi(hWnd,mainRoad, RobotContainer);
+		MessageBox(hWnd, TEXT("WM_CREATE"), TEXT("WM_CREATE"), MB_OK);
+		Initi(hWnd,mainRoad, RobotContainer);
 		SetTimer(hWnd, 1, 1000, NULL);
 		InvalidateRect(hWnd, NULL, true);
 		SendMessage(hWnd, WM_PAINT, 1, 0);
-		SendMessage(hWnd, WM_TIMER, 1, 0);
-		
+		//SendMessage(hWnd, WM_TIMER, 1, 0);
 		return 0;
 	case WM_TIMER:
 		hdc = GetDC(hWnd);
-		//RepeatedTask(mainRoad,RobotContainer);
+		RepeatedTask(mainRoad,RobotContainer);
+		ShowWindow(hWnd, SW_SHOWMAXIMIZED);
 		InvalidateRect(hWnd, NULL, true);
 		//SendMessage(hWnd, WM_PAINT, 1, 0);
 		ReleaseDC(hWnd, hdc);
@@ -95,37 +93,38 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		Display(hWnd,hdc,ps,RobotContainer,mainRoad);
 		EndPaint(hWnd, &ps);
 		return 0;
+	case WM_LBUTTONDOWN:
+		return 0;
 	case WM_KEYDOWN:
 		if (isMouseClicked) return 0;
 		if (GetAsyncKeyState(VK_SPACE) & 0x8000)
 		{
 			InvalidateRect(hWnd, NULL, TRUE);
 			//MessageBox(hWnd, TEXT("Ini!"), TEXT("백교풍비둘기"), MB_OK);
-			ShowWindow(hWnd, SW_SHOWMAXIMIZED);
 			return 0;
 		}
 		if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 		{
-			RobotContainer[0].NowCoord.x -= 50;
+			RobotContainer[mainRoad.PassiveID].NowCoord.x -= 50;
 		}
 		if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 		{
-			RobotContainer[0].NowCoord.x += 50;
+			RobotContainer[mainRoad.PassiveID].NowCoord.x += 50;
 		}
 		if (GetAsyncKeyState(VK_UP) & 0x8000)
 		{
-			RobotContainer[0].NowCoord.y -= 50;
+			RobotContainer[mainRoad.PassiveID].NowCoord.y -= 50;
 		}
 		if (GetAsyncKeyState(VK_DOWN) & 0x8000)
 		{
-			RobotContainer[0].NowCoord.y += 50;
+			RobotContainer[mainRoad.PassiveID].NowCoord.y += 50;
 		}
 		InvalidateRect(hWnd, NULL, TRUE);
 		//InvalidateRect(hWnd, &rt1, TRUE);
 		//InvalidateRect(hWnd, &rt2, TRUE);
 		return 0;
 	case WM_DESTROY:
-		//MessageBox(hWnd, TEXT("종료하시겠습니까?"), TEXT("백교풍비둘기"), MB_OK);
+		MessageBox(hWnd, TEXT("종료하시겠습니까?"), TEXT("백교풍비둘기"), MB_OK);
 		PostQuitMessage(0);
 		return 0;
 	}
