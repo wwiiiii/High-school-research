@@ -39,7 +39,7 @@ void Initi(HWND hWnd, cRoad &mainRoad, std::vector<cRobot>& RobotContainer)
 	
 	RobotContainer.push_back(tempRobot);
 	for (int i = 0; i < carnum; ++i){
-		; scanf("%d %d",&u,&v);
+		scanf("%d %d",&u,&v);
 		tempRobot.init(i, MASS, NULL, u, v);
 		RobotContainer.push_back(tempRobot);
 	}
@@ -53,8 +53,11 @@ void Display(HWND hWnd, HDC hdc, PAINTSTRUCT ps, std::vector<cRobot>& RobotConta
 	Rectangle(hdc, 70, 700 + 30, 1920 - 70, 1000 - 70);
 	Rectangle(hdc, 1400 + 30, 70, 1920 - 70, 70 + 300);
 	Rectangle(hdc, 1400 + 30, 70 + 300 + 30, 1920 - 70, 700);
-	/*
+	static int cnt=0; cnt++;
+	FILE *fp2 = fopen("cnt.txt", "wt");
+	fprintf(fp2," asdfasdf %d",cnt);
 	///자동차들 그리기
+	mainRoad.PassiveID = 1; mainRoad.scalex = mainRoad.scaley = 1;
 	coord center; center.x = (70 + 1400) / 2;  center.y = (70 + 700) / 2;
 	coord passiveCoord = RobotContainer[mainRoad.PassiveID].fNowCoord();
 	for (int i = 0; i < RobotContainer.size(); ++i)
@@ -62,9 +65,12 @@ void Display(HWND hWnd, HDC hdc, PAINTSTRUCT ps, std::vector<cRobot>& RobotConta
 		coord p = RobotContainer[i].fNowCoord();
 		p.x = center.x + (passiveCoord.x - p.x) / mainRoad.scalex;
 		p.y = center.y + (passiveCoord.y - p.y) / mainRoad.scaley;
-		Rectangle(hdc, p.x - 10, p.y - 10, p.x + 10, p.y + 10);
+		if (70 <= p.x - 10 && p.x + 10 <= 1400 && 70 <= p.y && p.y <= 700){
+			if (i != mainRoad.PassiveID)	Rectangle(hdc, p.x - 10, p.y - 10, p.x + 10, p.y + 10);
+			else Ellipse(hdc, p.x - 10, p.y - 10, p.x + 10, p.y + 10);
+		}
 	}
-	*/
+	
 	///도로그리기
 
 

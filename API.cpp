@@ -64,16 +64,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	HDC hdc;
 	PAINTSTRUCT ps;
 	static RECT rDisplay;///rDisplay :: zoomed scene area
-	static bool isMouseClicked = false;
+	static bool isMouseClicked = false; FILE *fp = fopen("output.txt", "wt");
+	cRobot tt;
+	fprintf(fp, "%d", RobotContainer.size());
+	
+	
 	switch (iMessage)
 	{
 	case WM_CREATE:
+		tt.init(0, 10.0, 0, 1, 1);
+		RobotContainer.push_back(tt);
+		tt.init(1, 10.0, 0, 1, 1);
+		RobotContainer.push_back(tt);
 		srand(time(NULL));
 		//Initi(hWnd,mainRoad, RobotContainer);
-		SetTimer(hWnd, 1, 1, NULL);
+		SetTimer(hWnd, 1, 1000, NULL);
 		InvalidateRect(hWnd, NULL, true);
 		SendMessage(hWnd, WM_PAINT, 1, 0);
 		SendMessage(hWnd, WM_TIMER, 1, 0);
+		
 		return 0;
 	case WM_TIMER:
 		hdc = GetDC(hWnd);
@@ -94,6 +103,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			//MessageBox(hWnd, TEXT("Ini!"), TEXT("백교풍비둘기"), MB_OK);
 			ShowWindow(hWnd, SW_SHOWMAXIMIZED);
 			return 0;
+		}
+		if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+		{
+			RobotContainer[0].NowCoord.x -= 50;
+		}
+		if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+		{
+			RobotContainer[0].NowCoord.x += 50;
+		}
+		if (GetAsyncKeyState(VK_UP) & 0x8000)
+		{
+			RobotContainer[0].NowCoord.y -= 50;
+		}
+		if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+		{
+			RobotContainer[0].NowCoord.y += 50;
 		}
 		InvalidateRect(hWnd, NULL, TRUE);
 		//InvalidateRect(hWnd, &rt1, TRUE);
