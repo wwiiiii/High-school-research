@@ -7,7 +7,6 @@
 #include "RobotClass.h"
 #include "InitAndDisplay.h"
 #include "Repeat.h"
-#define N 30
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 HINSTANCE g_hInst;
@@ -59,14 +58,12 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
-	int nx, ny; mainRoad.scalex = mainRoad.scaley = 1;
+	int nx, ny, MAXx = 0, MAXy = 0;
+	 mainRoad.scalex = mainRoad.scaley = 1;
 	int Rsize = 20;
 	HDC hdc;
 	PAINTSTRUCT ps;
-	//static RECT rDisplay;///rDisplay :: zoomed scene area
-	//static bool isMouseClicked = false; FILE *fp = fopen("output.txt", "wt");
 	cRobot tt;
-	//fprintf(fp, "%d", RobotContainer.size());
 	mainRoad.PassiveID = 1;
 	
 	switch (iMessage)
@@ -74,7 +71,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	case WM_CREATE:
 		srand(time(NULL));
 		Initi(hWnd,mainRoad, RobotContainer);
-		SetTimer(hWnd, 1, 500, NULL);
+		SetTimer(hWnd, 1, 1, NULL);
 		InvalidateRect(hWnd, NULL, true);
 		SendMessage(hWnd, WM_PAINT, 1, 0);
 		//SendMessage(hWnd, WM_TIMER, 1, 0);
@@ -102,19 +99,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		}
 		if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 		{
-			RobotContainer[mainRoad.PassiveID].NowCoord.x -= 50;
+			RobotContainer[mainRoad.PassiveID].NowCoord.x -= 10;
 		}
 		if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 		{
-			RobotContainer[mainRoad.PassiveID].NowCoord.x += 50;
+			RobotContainer[mainRoad.PassiveID].NowCoord.x += 10;
 		}
 		if (GetAsyncKeyState(VK_UP) & 0x8000)
 		{
-			RobotContainer[mainRoad.PassiveID].NowCoord.y -= 50;
+			RobotContainer[mainRoad.PassiveID].NowCoord.y -= 10;
 		}
 		if (GetAsyncKeyState(VK_DOWN) & 0x8000)
 		{
-			RobotContainer[mainRoad.PassiveID].NowCoord.y += 50;
+			RobotContainer[mainRoad.PassiveID].NowCoord.y += 10;
 		}
 		InvalidateRect(hWnd, NULL, TRUE);
 		//InvalidateRect(hWnd, &rt1, TRUE);

@@ -5,11 +5,13 @@
 
 void RepeatedTask(cRoad& mainRoad, std::vector<cRobot> &RobotContainer)
 {
-	coord p1, p2; double force, dist, forcex, forcey;
+	coord p1, p2; double force, dist, forcex, forcey, deltax;
 	for (int i = 0; i < RobotContainer.size(); ++i)
 	{
 		RobotContainer[i].force_x = RobotContainer[i].force_y = 0;
-		//RobotContainer[i].fConstForce();
+		RobotContainer[i].speed_x *= 0.9;
+		RobotContainer[i].speed_y *= 0.9;
+		RobotContainer[i].fConstForce(mainRoad.CheckPoints);
 	}
 	for (int i = 0; i < RobotContainer.size(); ++i)
 	{
@@ -18,17 +20,28 @@ void RepeatedTask(cRoad& mainRoad, std::vector<cRobot> &RobotContainer)
 		{
 			p2 = RobotContainer[j].fNowCoord();
 			dist = sqrt( (p1.x - p2.x)*(p1.x - p2.x) + (p1.y - p2.y)*(p1.y - p2.y) );
-			force = 0;// dist;
-			forcex = force * (p1.x - p2.x) / dist / 10000000;
-			forcey = force * (p1.y - p2.y) / dist / 10000000;
-			if (dist > 100){
-				RobotContainer[i].fRenewForce(forcex, forcey);
-				RobotContainer[j].fRenewForce(-forcex, -forcey);
+			deltax = dist - Xzero;
+			force = K  * deltax;// dist;
+			/*if (dist > 700){
+				forcex = force * (p2.x - p1.x) / dist;
+				forcey = force * (p2.y - p1.y) / dist;
 			}
-			else{
-				RobotContainer[i].fRenewForce(-forcex,- forcey);
-				RobotContainer[j].fRenewForce(forcex, forcey);
+			else {
+				if (dist != 0){
+					forcex = 1000000 / dist;
+					forcey = 1000000 / dist;
+					forcex *= (p2.x - p1.x) / dist;
+					forcey *= (p2.y - p1.y) / dist;
+				}
+				else forcex = forcey = -9321;
+			}*/
+			if (dist != 0){
+				forcex = force * (p2.x - p1.x) / dist;
+				forcey = force * (p2.y - p1.y) / dist;
 			}
+			else forcex = forcey = 1000;
+			RobotContainer[i].fRenewForce(forcex, forcey);
+			RobotContainer[j].fRenewForce(-forcex, -forcey);
 
 			///Process Interaction between two robots;
 			///RobotContainer[i], RobotContainer[j]
@@ -47,8 +60,6 @@ void RepeatedTask(cRoad& mainRoad, std::vector<cRobot> &RobotContainer)
 	for (int i = 0; i < RobotContainer.size(); ++i)
 	{
 		RobotContainer[i].fRenewVelocity();
-		RobotContainer[i].speed_x /= 1000000000;
-		RobotContainer[i].speed_y /= 1000000000;
 		RobotContainer[i].fRenewCoord();
 	}
 }

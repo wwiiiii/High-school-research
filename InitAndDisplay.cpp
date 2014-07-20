@@ -4,9 +4,7 @@
 #include <Windows.h>
 #include <cstdio>
 #include "InitAndDisplay.h"
-#define MASS (10.0)
-#define RatioX 1.5
-#define RatioY 1
+
 ///Load the given condition from "InputCondition.txt"
 ///display default menu
 
@@ -35,7 +33,7 @@ void Initi(HWND hWnd, cRoad &mainRoad, std::vector<cRobot>& RobotContainer)
 		mainRoad.CheckPoints.push_back(tempcoord);
 	}
 
-	for (int i = 1; i <= cpnum; ++i){
+	for (int i = 0; i < cpnum; ++i){
 		int n; scanf("%d", &n);
 		while (n--){
 			scanf("%d", &temp);
@@ -46,7 +44,10 @@ void Initi(HWND hWnd, cRoad &mainRoad, std::vector<cRobot>& RobotContainer)
 
 	for (int i = 0; i < carnum; ++i){
 		scanf("%d %d",&u,&v);
-		tempRobot.init(i, MASS, NULL, u, v);
+		tempcoord = mainRoad.CheckPoints[0];
+		//tempcoord.y += 30 * i;
+		//tempcoord.x += 30 * i;
+		tempRobot.init(i, MASS, NULL, u, v, tempcoord);
 		RobotContainer.push_back(tempRobot);
 	}
 	return;
@@ -61,23 +62,48 @@ void Display(HWND hWnd, HDC hdc, PAINTSTRUCT ps, std::vector<cRobot>& RobotConta
 	Rectangle(hdc, (1400 + 30) / RatioX, (70 + 300 + 30) / RatioY, (1920 - 70) / RatioX, 700 / RatioY);
 
 	///자동차들 그리기
-	mainRoad.PassiveID = 1; mainRoad.scalex = mainRoad.scaley = 1;
+	mainRoad.PassiveID = 1;
 	coord center; center.x = (70 + 1400) / 2;  center.y = (70 + 700) / 2;
 	center.x /= RatioX; center.y /= RatioY;
 	coord passiveCoord = RobotContainer[mainRoad.PassiveID].fNowCoord();
+
+	int MAXx =1, MAXy = 1;
+	/*if (!RobotContainer.empty())
+	{
+		for (int i = 0; i < RobotContainer.size(); ++i)
+		{
+			for (int j = i + 1; j < RobotContainer.size(); ++j)
+			{
+				int distx = abs(RobotContainer[i].NowCoord.x - RobotContainer[j].NowCoord.x);
+				int disty = abs(RobotContainer[i].NowCoord.y - RobotContainer[j].NowCoord.y);
+				MAXx = max(MAXx, distx); MAXy = max(MAXy, disty);
+			}
+		}
+		mainRoad.scalex = 1000 / MAXx;
+		mainRoad.scaley = 500 / MAXy;
+	}
+
+	else */mainRoad.scalex = mainRoad.scaley = 1;
 	for (int i = 0; i < RobotContainer.size(); ++i)
 	{
 		coord p = RobotContainer[i].fNowCoord();
-		p.x = center.x + (passiveCoord.x - p.x) / mainRoad.scalex / RatioX;
-		p.y = center.y + (passiveCoord.y - p.y) / mainRoad.scaley / RatioY;
+		p.x = center.x + (passiveCoord.x - p.x); p.x /= mainRoad.scalex * RatioX;
+		p.y = center.y + (passiveCoord.y - p.y); p.y /= mainRoad.scaley * RatioY;
 		if (70 / RatioX <= p.x - 10 && p.x + 10 <= 1400 / RatioX && 70 / RatioY <= p.y && p.y <= 700 / RatioY){
-			if (RobotContainer[i].id != mainRoad.PassiveID)	Rectangle(hdc, p.x - 10, p.y - 10, p.x + 10, p.y + 10);
+			if (i!= mainRoad.PassiveID)	Rectangle(hdc, p.x - 10, p.y - 10, p.x + 10, p.y + 10);
 			else Ellipse(hdc, p.x - 10, p.y - 10, p.x + 10, p.y + 10);
 		}
 	}
 	
 	///도로그리기
 
+	///위치들 출력하자
+	for (int i = 0; i < RobotContainer.size(); ++i)
+	{
+		TCHAR pnt[100];
+		wsprintf(pnt, TEXT("(%d,%d)"), RobotContainer[i].NowCoord.x , RobotContainer[i].NowCoord.y);;
+		TextOut(hdc, 1500 / RatioX, 30 * i, pnt, lstrlen(pnt));
+	}
 
 	return;
 }
