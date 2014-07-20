@@ -42,6 +42,7 @@ void cRobot::fRenewCoord(void){
 void cRobot::fConstForce(std::vector<coord>&CheckPoints){
 	force_x += BasicForceX;
 	force_y += BasicForceY;
+	if (RouteNowAt >= BasicRoute.size()) return;
 	coord NextCP = CheckPoints[BasicRoute[RouteNowAt]];
 	if (NextCP.x - 100 <= NowCoord.x && NowCoord.x <= NextCP.x + 100 && NextCP.y - 100 <= NowCoord.y && NowCoord.y <= NextCP.y + 100)
 	{

@@ -26,7 +26,7 @@ Direct X에서 WIN API 사용으로 노선 변경, 따로 도형 객체가 필요 없으므로 제거
 #include <utility>
 #include <vector>
 #define DATA int///기타 추가 자료형
-#define dT 0.1
+#define dT 0.0001
 
 //위치에 따라 작용하는 힘 계산 함수
 //x, y가 힘을 받는 물체의 좌표

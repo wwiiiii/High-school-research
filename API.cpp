@@ -63,20 +63,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	int Rsize = 20;
 	HDC hdc;
 	PAINTSTRUCT ps;
-	static RECT rDisplay;///rDisplay :: zoomed scene area
-	static bool isMouseClicked = false; FILE *fp = fopen("output.txt", "wt");
+	//static RECT rDisplay;///rDisplay :: zoomed scene area
+	//static bool isMouseClicked = false; FILE *fp = fopen("output.txt", "wt");
 	cRobot tt;
-	fprintf(fp, "%d", RobotContainer.size());
+	//fprintf(fp, "%d", RobotContainer.size());
 	mainRoad.PassiveID = 1;
-	
 	
 	switch (iMessage)
 	{
 	case WM_CREATE:
 		srand(time(NULL));
-		MessageBox(hWnd, TEXT("WM_CREATE"), TEXT("WM_CREATE"), MB_OK);
 		Initi(hWnd,mainRoad, RobotContainer);
-		SetTimer(hWnd, 1, 1000, NULL);
+		SetTimer(hWnd, 1, 500, NULL);
 		InvalidateRect(hWnd, NULL, true);
 		SendMessage(hWnd, WM_PAINT, 1, 0);
 		//SendMessage(hWnd, WM_TIMER, 1, 0);
@@ -88,6 +86,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		InvalidateRect(hWnd, NULL, true);
 		//SendMessage(hWnd, WM_PAINT, 1, 0);
 		ReleaseDC(hWnd, hdc);
+		return 0;
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
 		Display(hWnd,hdc,ps,RobotContainer,mainRoad);
@@ -96,11 +95,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	case WM_LBUTTONDOWN:
 		return 0;
 	case WM_KEYDOWN:
-		if (isMouseClicked) return 0;
 		if (GetAsyncKeyState(VK_SPACE) & 0x8000)
 		{
 			InvalidateRect(hWnd, NULL, TRUE);
-			//MessageBox(hWnd, TEXT("Ini!"), TEXT("백교풍비둘기"), MB_OK);
 			return 0;
 		}
 		if (GetAsyncKeyState(VK_LEFT) & 0x8000)
@@ -124,7 +121,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		//InvalidateRect(hWnd, &rt2, TRUE);
 		return 0;
 	case WM_DESTROY:
-		MessageBox(hWnd, TEXT("종료하시겠습니까?"), TEXT("백교풍비둘기"), MB_OK);
+		MessageBox(hWnd, TEXT("Exit?"), TEXT("Kev is Chicken!"), MB_OK);
 		PostQuitMessage(0);
 		return 0;
 	}
