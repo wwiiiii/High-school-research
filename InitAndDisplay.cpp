@@ -3,6 +3,8 @@
 
 #include <Windows.h>
 #include <cstdio>
+#include <algorithm>
+#include <vector>
 #include "InitAndDisplay.h"
 
 ///Load the given condition from "InputCondition.txt"
@@ -26,6 +28,12 @@ void Initi(HWND hWnd, cRoad &mainRoad, std::vector<cRobot>& RobotContainer)
 		templine.b =  -(templine.to.x - templine.from.x);
 		templine.c = templine.to.x * templine.from.y - templine.from.y *  templine.to.x;
 		if (templine.a < 0) templine.a *= -1, templine.b *= -1, templine.c *= -1;
+		if(templine.from.x > templine.to.x){
+			std::swap(templine.from, templine.to);
+		}
+		if(templine.from.x == templine.to.x && templine.from.y > templine.to.y){
+			std::swap(templine.from, templine.to);
+		}
 		mainRoad.Lines.push_back(templine);
 	}
 	for (int i = 0; i < cpnum; ++i){
@@ -88,14 +96,14 @@ std::pair<bool, std::pair<coord, coord> > CoordCalculate(coord p1, coord p2, dou
 void Display(HWND hWnd, HDC hdc, PAINTSTRUCT ps, std::vector<cRobot>& RobotContainer, cRoad &mainRoad)
 {
 
-	///±âº» Æ² »ý¼º, Draw basic frame
+	///ï¿½âº» Æ² ï¿½ï¿½ï¿½ï¿½, Draw basic frame
 	Rectangle(hdc, 70 / RatioX, 70 / RatioY, 1400 / RatioX, 700 / RatioY);
 	Rectangle(hdc, 70 / RatioX, (700 + 30) / RatioY, (1920 - 70) / RatioX, (1000 - 70) / RatioY);
 	Rectangle(hdc, (1400 + 30) / RatioX, 70 / RatioY, (1920 - 70) / RatioX, (70 + 300) / RatioY);
 	Rectangle(hdc, (1400 + 30) / RatioX, (70 + 300 + 30) / RatioY, (1920 - 70) / RatioX, 700 / RatioY);
 	
 	
-	///ÀÚµ¿Â÷µé ±×¸®±â
+	///ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½
 	HPEN my, old;
 	my = CreatePen(PS_SOLID, 2 , RGB(243,97,220));
 	old = (HPEN)SelectObject(hdc, my);
@@ -121,7 +129,7 @@ void Display(HWND hWnd, HDC hdc, PAINTSTRUCT ps, std::vector<cRobot>& RobotConta
 	
 
 
-	///Àå¾Ö¹° ¶ç¿ì±â
+	///ï¿½ï¿½ï¿½Ö¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	for (int i = 0; i < mainRoad.Obstacles.size(); ++i)
 	{
 		coord p = mainRoad.Obstacles[i];
@@ -133,7 +141,8 @@ void Display(HWND hWnd, HDC hdc, PAINTSTRUCT ps, std::vector<cRobot>& RobotConta
 	}
 	
 
-	///µµ·Î±×¸®±â
+	///ï¿½ï¿½ï¿½Î±×¸ï¿½ï¿½ï¿½
+	std::vector<coord> IntersectContainer;
 	coord q1, q2; bool isIntersect;
 	std::pair<bool , std::pair<coord, coord> >ret;
 	q1.x = passiveCoord.x + mainRoad.scalex * (70 - center.x);
@@ -147,14 +156,35 @@ void Display(HWND hWnd, HDC hdc, PAINTSTRUCT ps, std::vector<cRobot>& RobotConta
 		ret = CoordCalculate(q1,q2,mainRoad.Lines[i].a , mainRoad.Lines[i].b, mainRoad.Lines[i].c);
 		if (ret.first == false) continue;
 		coord from = ret.second.first; coord to = ret.second.second;
-		from.x = (from.x - passiveCoord.x) / mainRoad.scalex; from.x += center.x; from.x /= RatioX;
-		from.y = (from.y - passiveCoord.y) / mainRoad.scaley; from.y += center.y; from.y /= RatioY;
-		to.x = (to.x - passiveCoord.x) / mainRoad.scalex; to.x += center.x; to.x /= RatioX;
-		to.y = (to.y - passiveCoord.y) / mainRoad.scaley; to.y += center.y; to.y /= RatioY;
-		MoveToEx(hdc, from.x, from.y, NULL); LineTo(hdc, to.x, to.y);
+		if(mainRoad.Lines[i].from.x <= from.x && from.x <= mainRoad.Lines[i].to.x &&
+		   mainRoad.Lines[i].from.y <= from.x && from.x <= mainRoad.Lines[i].to.y) IntersectContainer.push_back(from);
+		if(mainRoad.Lines[i].from.x <= to.x && to.x <= mainRoad.Lines[i].to.x &&
+		   mainRoad.Lines[i].from.y <= to.x && to.x <= mainRoad.Lines[i].to.y) IntersectContainer.push_back(to);
+		if(q1.x <= mainRoad.Lines[i].from.x && mainRoad.Lines[i].from.x <= q2.x &&
+		   q2.y <= mainRoad.Lines[i].from.y && mainRoad.Lines[i].from.y <= q1.y) IntersectContainer.push_back(mainRoad.Lines[i].from);
+		if(q1.x <= mainRoad.Lines[i].to.x && mainRoad.Lines[i].to.x <= q2.x &&
+		   q2.y <= mainRoad.Lines[i].to.y && mainRoad.Lines[i].to.y <= q1.y) IntersectContainer.push_back(mainRoad.Lines[i].to);
+		
+		for(int q = 0; q<IntersectContainer.size(); ++q)
+		{
+			IntersectContainer[q].x = (IntersectContainer[q].x - passiveCoord.x) / mainRoad.scalex; IntersectContainer[q].x += center.x; IntersectContainer[q].x/=RatioX;
+			IntersectContainer[q].y = (IntersectContainer[q].y - passiveCoord.y) / mainRoad.scaley; IntersectContainer[q].y += center.y; IntersectContainer[q].y/=RatioY;
+			
+		}
+		
+		for(int q = 0; q<IntersectContainer.size()-1; ++q)
+		{
+			MoveToEx(hdc, IntersectContainer[q].x , IntersectContainer[q].y, NULL);
+			LineTo(hdc, IntersectContainer[q+1].x , IntersectContainer[q+1].y);
+		}
+		//from.x = (from.x - passiveCoord.x) / mainRoad.scalex; from.x += center.x; from.x /= RatioX;
+		//from.y = (from.y - passiveCoord.y) / mainRoad.scaley; from.y += center.y; from.y /= RatioY;
+		//to.x = (to.x - passiveCoord.x) / mainRoad.scalex; to.x += center.x; to.x /= RatioX;
+		//to.y = (to.y - passiveCoord.y) / mainRoad.scaley; to.y += center.y; to.y /= RatioY;
+		//MoveToEx(hdc, from.x, from.y, NULL); LineTo(hdc, to.x, to.y);
 	}
 
-	///À§Ä¡µé Ãâ·ÂÇÏÀÚ
+	///ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	for (int i = 0; i < RobotContainer.size(); ++i)
 	{
 		TCHAR pnt[100];
