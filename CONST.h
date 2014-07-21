@@ -6,7 +6,8 @@
 #define RatioY 1.5
 #define N 30
 #define K 0.001
-#define Xzero 400
+#define Xzero 700
+#define MAX_DIST 10000
 #define dT 0.005
 #define ProportionConstant (10000.0)
 #define Threshold (500)

@@ -11,7 +11,7 @@ void RepeatedTask(cRoad& mainRoad, std::vector<cRobot> &RobotContainer)
 		RobotContainer[i].force_x = RobotContainer[i].force_y = 0;
 		RobotContainer[i].speed_x *= 0.9;
 		RobotContainer[i].speed_y *= 0.9;
-		RobotContainer[i].fConstForce(mainRoad.CheckPoints);
+		//RobotContainer[i].fConstForce(mainRoad.CheckPoints);
 	}
 	for (int i = 0; i < RobotContainer.size(); ++i)
 	{
@@ -20,6 +20,7 @@ void RepeatedTask(cRoad& mainRoad, std::vector<cRobot> &RobotContainer)
 		{
 			p2 = RobotContainer[j].fNowCoord();
 			dist = sqrt( (p1.x - p2.x)*(p1.x - p2.x) + (p1.y - p2.y)*(p1.y - p2.y) );
+			if (dist > MAX_DIST) continue;
 			deltax = dist - Xzero;
 			force = K  * deltax;// dist;
 			/*if (dist > 700){

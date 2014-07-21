@@ -11,7 +11,6 @@
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 HINSTANCE g_hInst;
 LPCTSTR lpszClass = TEXT("GSSH TEAM PROJECT");
-
 std::vector<cRobot> RobotContainer;
 cRoad mainRoad;
 
@@ -59,8 +58,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
 	int nx, ny, MAXx = 0, MAXy = 0, Rsize = 20;
-	HDC hdc; PAINTSTRUCT ps;	cRobot tt;
-	
+	PAINTSTRUCT ps;	cRobot tt;
+	RECT rect; HDC hdc, hdcMem, hdcBm;
+	HBITMAP hbmOld, hbmMem, hbmMemOld;
 	switch (iMessage)
 	{
 	case WM_CREATE:
@@ -76,33 +76,50 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		hdc = GetDC(hWnd);
 		RepeatedTask(mainRoad,RobotContainer);
 		ShowWindow(hWnd, SW_SHOWMAXIMIZED);
-		InvalidateRect(hWnd, NULL, true);
+		InvalidateRect(hWnd, NULL, false);
 		//SendMessage(hWnd, WM_PAINT, 1, 0);
 		ReleaseDC(hWnd, hdc);
 		return 0;
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
-		Display(hWnd,hdc,ps,RobotContainer,mainRoad);
+		GetClientRect(hWnd, &rect);
+		hdcMem = CreateCompatibleDC(hdc);//2
+		hbmMem = CreateCompatibleBitmap(hdc, rect.right, rect.bottom);//3
+		hbmMemOld = (HBITMAP)SelectObject(hdcMem, hbmMem);//4
+		Display(hWnd,hdcMem,ps,RobotContainer,mainRoad);
+		BitBlt(hdc, 0, 0, rect.right, rect.bottom, hdcMem, 0, 0, SRCCOPY);
+		SelectObject(hdcMem, hbmMemOld); //-4
+		DeleteObject(hbmMem); //-3
+		DeleteDC(hdcMem); //-2
 		EndPaint(hWnd, &ps);
 		return 0;
 	case WM_LBUTTONDOWN:
 		return 0;
 	case WM_KEYDOWN:
+		if (GetAsyncKeyState(VK_TAB) & 0x8000)
+		{
+			++mainRoad.PassiveID;
+			mainRoad.PassiveID %= RobotContainer.size();
+		}
 		if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 		{
 			RobotContainer[mainRoad.PassiveID].NowCoord.x -= 10;
+			//RobotContainer[mainRoad.PassiveID].fRenewForce(-1000, 0);
 		}
 		if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 		{
 			RobotContainer[mainRoad.PassiveID].NowCoord.x += 10;
+			//RobotContainer[mainRoad.PassiveID].fRenewForce(1000, 0);
 		}
 		if (GetAsyncKeyState(VK_UP) & 0x8000)
 		{
 			RobotContainer[mainRoad.PassiveID].NowCoord.y -= 10;
+			//RobotContainer[mainRoad.PassiveID].fRenewForce(0,-1000);
 		}
 		if (GetAsyncKeyState(VK_DOWN) & 0x8000)
 		{
 			RobotContainer[mainRoad.PassiveID].NowCoord.y += 10;
+			//RobotContainer[mainRoad.PassiveID].fRenewForce(0,1000);
 		}
 		if (GetAsyncKeyState(VK_PRIOR) & 0x8000)
 		{
@@ -112,7 +129,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		{
 			mainRoad.scalex *= 1.1; mainRoad.scaley *= 1.1;
 		}
-		InvalidateRect(hWnd, NULL, TRUE);
+		InvalidateRect(hWnd, NULL, FALSE);
 		//InvalidateRect(hWnd, &rt1, TRUE);
 		//InvalidateRect(hWnd, &rt2, TRUE);
 		return 0;
