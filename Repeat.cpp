@@ -22,20 +22,7 @@ void RepeatedTask(cRoad& mainRoad, std::vector<cRobot> &RobotContainer)
 			dist = sqrt( (p1.x - p2.x)*(p1.x - p2.x) + (p1.y - p2.y)*(p1.y - p2.y) );
 			if (dist > MAX_DIST) continue;
 			deltax = dist - Xzero;
-			force = K  * deltax;// dist;
-			/*if (dist > 700){
-				forcex = force * (p2.x - p1.x) / dist;
-				forcey = force * (p2.y - p1.y) / dist;
-			}
-			else {
-				if (dist != 0){
-					forcex = 1000000 / dist;
-					forcey = 1000000 / dist;
-					forcex *= (p2.x - p1.x) / dist;
-					forcey *= (p2.y - p1.y) / dist;
-				}
-				else forcex = forcey = -9321;
-			}*/
+			force = K  * deltax;
 			if (dist != 0){
 				forcex = force * (p2.x - p1.x) / dist;
 				forcey = force * (p2.y - p1.y) / dist;
@@ -48,7 +35,7 @@ void RepeatedTask(cRoad& mainRoad, std::vector<cRobot> &RobotContainer)
 			///RobotContainer[i], RobotContainer[j]
 		}
 	}
-	
+
 	/*for (int i = 0; i < RobotContainer.size(); ++i)
 	{
 		for (int j = 0; j < mainRoad.Lines.size(); ++j)
@@ -58,6 +45,29 @@ void RepeatedTask(cRoad& mainRoad, std::vector<cRobot> &RobotContainer)
 		}
 		///Process Interaction between robot and lines
 	}*/
+
+	for (int i = 0; i < RobotContainer.size(); ++i)
+	{
+		p1 = RobotContainer[i].fNowCoord();
+		for (int j = 0; j < mainRoad.Obstacles.size(); ++j)
+		{
+			p2 = mainRoad.Obstacles[j];
+			dist = sqrt((p1.x - p2.x)*(p1.x - p2.x) + (p1.y - p2.y)*(p1.y - p2.y));
+			if (dist > MAX_DIST) continue;
+			deltax = dist - Xzero;
+			force = K  * deltax;
+			if (dist != 0){
+				forcex = force * (p2.x - p1.x) / dist;
+				forcey = force * (p2.y - p1.y) / dist;
+			}
+			else forcex = forcey = 1000;
+			RobotContainer[i].fRenewForce(forcex, forcey);
+			///Process Interaction between robot and obstacles
+			///RobotContainer[i], RobotContainer[j]
+		}
+	}
+
+
 	for (int i = 0; i < RobotContainer.size(); ++i)
 	{
 		RobotContainer[i].fRenewVelocity();

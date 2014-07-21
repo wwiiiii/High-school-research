@@ -96,6 +96,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	case WM_LBUTTONDOWN:
 		return 0;
 	case WM_KEYDOWN:
+		if (GetAsyncKeyState(VK_SPACE) & 0x8000){
+			Sleep(1000);
+		}
 		if (GetAsyncKeyState(VK_TAB) & 0x8000)
 		{
 			++mainRoad.PassiveID;
