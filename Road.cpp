@@ -4,8 +4,7 @@
 #include "Road.h"
 #include <cmath>
 #include <cstdio>
-#define ProportionConstant (10000.0)
-#define Threshold (500)
+
 
 std::pair<double, double > cRoad::fRoadForce(cRobot& target){
 

@@ -58,19 +58,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
-	int nx, ny, MAXx = 0, MAXy = 0;
-	 mainRoad.scalex = mainRoad.scaley = 1;
-	int Rsize = 20;
-	HDC hdc;
-	PAINTSTRUCT ps;
-	cRobot tt;
-	mainRoad.PassiveID = 1;
+	int nx, ny, MAXx = 0, MAXy = 0, Rsize = 20;
+	HDC hdc; PAINTSTRUCT ps;	cRobot tt;
 	
 	switch (iMessage)
 	{
 	case WM_CREATE:
 		srand(time(NULL));
 		Initi(hWnd,mainRoad, RobotContainer);
+		mainRoad.PassiveID = 1; mainRoad.scalex = mainRoad.scaley = 1.0;
 		SetTimer(hWnd, 1, 1, NULL);
 		InvalidateRect(hWnd, NULL, true);
 		SendMessage(hWnd, WM_PAINT, 1, 0);
@@ -92,11 +88,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	case WM_LBUTTONDOWN:
 		return 0;
 	case WM_KEYDOWN:
-		if (GetAsyncKeyState(VK_SPACE) & 0x8000)
-		{
-			InvalidateRect(hWnd, NULL, TRUE);
-			return 0;
-		}
 		if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 		{
 			RobotContainer[mainRoad.PassiveID].NowCoord.x -= 10;
@@ -112,6 +103,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		if (GetAsyncKeyState(VK_DOWN) & 0x8000)
 		{
 			RobotContainer[mainRoad.PassiveID].NowCoord.y += 10;
+		}
+		if (GetAsyncKeyState(VK_PRIOR) & 0x8000)
+		{
+			mainRoad.scalex /= 1.1; mainRoad.scaley /= 1.1;
+		}
+		if (GetAsyncKeyState(VK_NEXT) & 0x8000)
+		{
+			mainRoad.scalex *= 1.1; mainRoad.scaley *= 1.1;
 		}
 		InvalidateRect(hWnd, NULL, TRUE);
 		//InvalidateRect(hWnd, &rt1, TRUE);

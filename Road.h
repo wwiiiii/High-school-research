@@ -3,11 +3,13 @@
 #include <utility>
 #include <vector>
 #include "RobotClass.h"
+#include "CONST.h"
 typedef struct{ double a, b, c; coord from, to; }line; ///always a>=0, segment [from, to]
 
 class cRoad{
 public:
-	int scalex, scaley, PassiveID;///PassiveID는 수동조작중인 차의 id
+	int PassiveID;///PassiveID는 수동조작중인 차의 id
+	double scalex, scaley;
 	std::vector<line> Lines;			
 	std::vector<coord> CheckPoints;
 	std::vector<std::vector<int> > Directions;///Directions[i]'s component j => there is route [i] -> [j]
