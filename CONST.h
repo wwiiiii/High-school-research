@@ -2,8 +2,8 @@
 #define __CONST__H
 
 #define MASS (1.0)
-#define RatioX 1.5
-#define RatioY 1.5
+#define RatioX 2.5
+#define RatioY 2.5
 #define N 30
 #define K 0.001
 #define Xzero 700

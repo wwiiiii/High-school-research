@@ -169,14 +169,15 @@ void Display(HWND hWnd, HDC hdc, PAINTSTRUCT ps, std::vector<cRobot>& RobotConta
 		{
 			IntersectContainer[q].x = (IntersectContainer[q].x - passiveCoord.x) / mainRoad.scalex; IntersectContainer[q].x += center.x; IntersectContainer[q].x/=RatioX;
 			IntersectContainer[q].y = (IntersectContainer[q].y - passiveCoord.y) / mainRoad.scaley; IntersectContainer[q].y += center.y; IntersectContainer[q].y/=RatioY;
-			
+			MoveToEx(hdc, IntersectContainer[q].x, IntersectContainer[q].y, NULL);
+		}
+
+		for (int q = 0; q+1<IntersectContainer.size(); ++q)
+		{
+			MoveToEx(hdc, IntersectContainer[q].x, IntersectContainer[q].y, NULL);
+			LineTo(hdc, IntersectContainer[q + 1].x, IntersectContainer[q + 1].y);
 		}
 		
-		for(int q = 0; q<IntersectContainer.size()-1; ++q)
-		{
-			MoveToEx(hdc, IntersectContainer[q].x , IntersectContainer[q].y, NULL);
-			LineTo(hdc, IntersectContainer[q+1].x , IntersectContainer[q+1].y);
-		}
 		//from.x = (from.x - passiveCoord.x) / mainRoad.scalex; from.x += center.x; from.x /= RatioX;
 		//from.y = (from.y - passiveCoord.y) / mainRoad.scaley; from.y += center.y; from.y /= RatioY;
 		//to.x = (to.x - passiveCoord.x) / mainRoad.scalex; to.x += center.x; to.x /= RatioX;
