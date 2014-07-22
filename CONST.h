@@ -7,8 +7,9 @@
 #define N 30
 #define K 0.001
 #define Xzero 700
-#define MAX_DIST 10000
+#define MAX_DIST 7000
 #define dT 0.005
+#define EPSILON 0.001
 #define ProportionConstant (10000.0)
 #define Threshold (500)
 
