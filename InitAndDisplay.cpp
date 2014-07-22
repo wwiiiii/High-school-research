@@ -31,7 +31,7 @@ void Initi(HWND hWnd, cRoad &mainRoad, std::vector<cRobot>& RobotContainer)
 		if(templine.from.x > templine.to.x){
 			std::swap(templine.from, templine.to);
 		}
-		if(templine.from.x == templine.to.x && templine.from.y > templine.to.y){
+		if(templine.from.x == templine.to.x && templine.from.y < templine.to.y){
 			std::swap(templine.from, templine.to);
 		}
 		mainRoad.Lines.push_back(templine);
@@ -52,10 +52,10 @@ void Initi(HWND hWnd, cRoad &mainRoad, std::vector<cRobot>& RobotContainer)
 
 	for (int i = 0; i < carnum; ++i){
 		scanf("%d %d",&u,&v);
-		tempcoord = mainRoad.CheckPoints[0];
-		tempcoord.y += 30 * i;
-		tempcoord.x += 30 * i;
-		if (i == 1) tempcoord.x += 100;
+		tempcoord = mainRoad.CheckPoints[1];
+		tempcoord.y -= 3 * i;
+		tempcoord.x -= 3 * i;
+		if (i == 1) tempcoord.x -= 100;
 		tempRobot.init(i, MASS, NULL, u, v, tempcoord);
 		RobotContainer.push_back(tempRobot);
 	}
@@ -90,6 +90,12 @@ std::pair<bool, std::pair<coord, coord> > CoordCalculate(coord p1, coord p2, dou
 	else return std::make_pair(false, std::make_pair(q1, q2));
 }
 
+bool compare(const coord & p1, const coord &p2)
+{
+	if (p1.x != p2.x) return p1.x < p2.x;
+	else return p1.y < p2.y;
+}
+
 void Display(HWND hWnd, HDC hdc, PAINTSTRUCT ps, std::vector<cRobot>& RobotContainer, cRoad &mainRoad)
 {
 
@@ -105,8 +111,10 @@ void Display(HWND hWnd, HDC hdc, PAINTSTRUCT ps, std::vector<cRobot>& RobotConta
 	my = CreatePen(PS_SOLID, 2 , RGB(243,97,220));
 	old = (HPEN)SelectObject(hdc, my);
 	coord center; center.x = (70 + 1400) / 2;  center.y = (70 + 700) / 2;
-	coord passiveCoord = RobotContainer[mainRoad.PassiveID].fNowCoord();
-	//passiveCoord.x = 55000; passiveCoord.y = 75000;
+	coord passiveCoord;
+	if (mainRoad.PassiveID == -1)passiveCoord.x = 5000, passiveCoord.y = 5000;
+	else passiveCoord = RobotContainer[mainRoad.PassiveID].fNowCoord();
+	
 	for (int i = 0; i < RobotContainer.size(); ++i)
 	{
 		coord p = RobotContainer[i].fNowCoord();
@@ -168,13 +176,13 @@ void Display(HWND hWnd, HDC hdc, PAINTSTRUCT ps, std::vector<cRobot>& RobotConta
 		   q1.y <= mainRoad.Lines[i].from.y && mainRoad.Lines[i].from.y <= q2.y) IntersectContainer.push_back(mainRoad.Lines[i].from);
 		if(q1.x <= mainRoad.Lines[i].to.x && mainRoad.Lines[i].to.x <= q2.x &&
 		   q1.y <= mainRoad.Lines[i].to.y && mainRoad.Lines[i].to.y <= q2.y) IntersectContainer.push_back(mainRoad.Lines[i].to);
-		{ TCHAR pnt1[50] = {}; wsprintf(pnt1, TEXT("INtheRoof [%d] (%d %d %d)"),IntersectContainer.size(), (int)mainRoad.Lines[0].a, (int)mainRoad.Lines[0].b, (int)mainRoad.Lines[0].c);;
-		TextOut(hdc, 100 / RatioX, 100 / RatioY, pnt1, lstrlen(pnt1)); }
+		
+		std::sort(IntersectContainer.begin(), IntersectContainer.end(), compare);
+
 		for(int q = 0; q<IntersectContainer.size(); ++q)
 		{
 			IntersectContainer[q].x = (IntersectContainer[q].x - passiveCoord.x) / mainRoad.scalex; IntersectContainer[q].x += center.x; IntersectContainer[q].x/=RatioX;
 			IntersectContainer[q].y = (IntersectContainer[q].y - passiveCoord.y) / mainRoad.scaley; IntersectContainer[q].y += center.y; IntersectContainer[q].y/=RatioY;
-			MoveToEx(hdc, IntersectContainer[q].x, IntersectContainer[q].y, NULL);
 		}
 
 		for (int q = 0; q+1<IntersectContainer.size(); ++q)

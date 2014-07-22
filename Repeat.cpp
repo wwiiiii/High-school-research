@@ -1,5 +1,6 @@
 #include <vector>
 #include <utility>
+#include <algorithm>
 #include "Road.h"
 #include "RobotClass.h"
 
@@ -36,15 +37,30 @@ void RepeatedTask(cRoad& mainRoad, std::vector<cRobot> &RobotContainer)
 		}
 	}
 
-	/*for (int i = 0; i < RobotContainer.size(); ++i)
+	for (int i = 0; i < RobotContainer.size(); ++i)
 	{
 		for (int j = 0; j < mainRoad.Lines.size(); ++j)
 		{
-			std::pair<double, double> F = mainRoad.fRoadForce(RobotContainer[i]);
-			RobotContainer[i].fRenewForce(F.first,F.second);
+			double a = mainRoad.Lines[j].a;
+			double b = mainRoad.Lines[j].b;
+			double c = mainRoad.Lines[j].c;
+			coord now = RobotContainer[i].NowCoord;
+			if (now.x <= mainRoad.Lines[j].from.x-50 || mainRoad.Lines[j].to.x+50 <= now.x ||
+				now.y <= std::min(mainRoad.Lines[j].from.y, mainRoad.Lines[j].to.y)-50 || std::max(mainRoad.Lines[j].from.y, mainRoad.Lines[j].to.y)+50 <= now.y) continue;
+			if (abs(now.x - mainRoad.Lines[j].from.x) <= 10 || abs(now.x - mainRoad.Lines[j].to.x) <= 10 ||
+				abs(now.y - mainRoad.Lines[j].from.y) <= 10 || abs(now.y - mainRoad.Lines[j].to.y) <= 10) continue;
+			double dista = abs(a * now.x + b * now.y + c) / sqrt(a*a+b*b);
+			if (dista >= MAX_DIST2) continue;
+			if (dista <= 100) dist = 100;
+			double force1 = 100000 / dista;
+			
+			double forx = -force1 * a / sqrt(a*a+b*b);
+			double fory = -force1 * b / sqrt(a*a + b*b);
+
+			RobotContainer[i].fRenewForce(forx, fory);
 		}
 		///Process Interaction between robot and lines
-	}*/
+	}
 
 	for (int i = 0; i < RobotContainer.size(); ++i)
 	{

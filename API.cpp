@@ -66,7 +66,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	case WM_CREATE:
 		srand(time(NULL));
 		Initi(hWnd,mainRoad, RobotContainer);
-		mainRoad.PassiveID = 1; mainRoad.scalex = mainRoad.scaley = 1.0;
+		mainRoad.PassiveID = -1; mainRoad.scalex = mainRoad.scaley = 13.0;
 		SetTimer(hWnd, 1, 1, NULL);
 		InvalidateRect(hWnd, NULL, true);
 		SendMessage(hWnd, WM_PAINT, 1, 0);
@@ -102,26 +102,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		if (GetAsyncKeyState(VK_TAB) & 0x8000)
 		{
 			++mainRoad.PassiveID;
-			mainRoad.PassiveID %= RobotContainer.size();
+			if (mainRoad.PassiveID == RobotContainer.size()) mainRoad.PassiveID = -1;
 		}
 		if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 		{
-			RobotContainer[mainRoad.PassiveID].NowCoord.x -= 10;
+			if (mainRoad.PassiveID != -1) RobotContainer[mainRoad.PassiveID].NowCoord.x -= 10;
 			//RobotContainer[mainRoad.PassiveID].fRenewForce(-1000, 0);
 		}
 		if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 		{
-			RobotContainer[mainRoad.PassiveID].NowCoord.x += 10;
+			if (mainRoad.PassiveID != -1)RobotContainer[mainRoad.PassiveID].NowCoord.x += 10;
 			//RobotContainer[mainRoad.PassiveID].fRenewForce(1000, 0);
 		}
 		if (GetAsyncKeyState(VK_UP) & 0x8000)
 		{
-			RobotContainer[mainRoad.PassiveID].NowCoord.y -= 10;
+			if (mainRoad.PassiveID != -1)RobotContainer[mainRoad.PassiveID].NowCoord.y -= 10;
 			//RobotContainer[mainRoad.PassiveID].fRenewForce(0,-1000);
 		}
 		if (GetAsyncKeyState(VK_DOWN) & 0x8000)
 		{
-			RobotContainer[mainRoad.PassiveID].NowCoord.y += 10;
+			if (mainRoad.PassiveID != -1)RobotContainer[mainRoad.PassiveID].NowCoord.y += 10;
 			//RobotContainer[mainRoad.PassiveID].fRenewForce(0,1000);
 		}
 		if (GetAsyncKeyState(VK_PRIOR) & 0x8000)
